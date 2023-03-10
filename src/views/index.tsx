@@ -3,12 +3,10 @@ import { Suspense } from 'react';
 import type { FC } from 'react';
 import { ConfigProvider, App as AntdApp } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
-
-import { LoadingSpin } from '@/components/LoadingSpin';
 import { Router } from '@/router';
 import { Header } from '@/components/Header';
 import { useAppSelector } from '@/store';
-
+import { RouteLoading } from '@/components/RouteLoading';
 import styles from './index.module.less';
 
 const MainView: FC = () => {
@@ -20,7 +18,7 @@ const MainView: FC = () => {
         <HashRouter>
           <Header />
 
-          <Suspense fallback={<LoadingSpin delay={200} />}>
+          <Suspense fallback={<RouteLoading />}>
             <Router />
           </Suspense>
         </HashRouter>
