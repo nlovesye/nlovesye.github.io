@@ -20,7 +20,7 @@ const MainView: FC = () => {
         <HashRouter>
           <Header />
 
-          <Suspense fallback={<LoadingSpin />}>
+          <Suspense fallback={<LoadingSpin delay={200} />}>
             <Router />
           </Suspense>
         </HashRouter>
