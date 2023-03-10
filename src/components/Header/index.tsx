@@ -7,6 +7,8 @@ import { useThemeTokenSelector } from '@/hooks/useThemeTokenSelector';
 import { HEADER_MENU_ROUTES } from '@/router/routes';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
+import logo from './favicon.png';
+
 export const Header: FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -40,7 +42,7 @@ export const Header: FC = () => {
     <header className={styles.header} style={headerStyle}>
       <div className={styles.mainContent}>
         <Link to="/" className={styles.logo}>
-          <Avatar shape="square" src="./favicon.ico" size={46} alt="home" />
+          <Avatar shape="square" src={logo} size={46} alt="home" />
         </Link>
 
         <Menu
