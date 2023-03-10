@@ -22,7 +22,7 @@ module.exports = {
                 loader: 'css-loader',
                 options: {
                   modules: {
-                    localIdentName: 'ns-[local]',
+                    localIdentName: 'ns-[path][name]__[local]',
                   },
                 },
               },
