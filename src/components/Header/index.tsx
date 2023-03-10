@@ -40,7 +40,7 @@ export const Header: FC = () => {
     <header className={styles.header} style={headerStyle}>
       <div className={styles.mainContent}>
         <Link to="/" className={styles.logo}>
-          <Avatar shape="square" src="/favicon.ico" size={46} alt="home" />
+          <Avatar shape="square" src="./favicon.ico" size={46} alt="home" />
         </Link>
 
         <Menu
