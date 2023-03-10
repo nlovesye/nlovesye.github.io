@@ -1,0 +1,32 @@
+@import '~@/styles/variable.less';
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: @headerHeight;
+  padding: 0 20px;
+  background-color: #001529;
+
+  .mainContent {
+    display: flex;
+    align-items: center;
+
+    .logo {
+      margin-right: 6px;
+      cursor: pointer;
+      transition: all 180ms;
+      border-radius: 6px;
+      overflow: hidden;
+
+      &:hover {
+        transform: scale(1.08) translateX(4px);
+      }
+    }
+
+    .menu {
+      flex: auto;
+    }
+  }
+}

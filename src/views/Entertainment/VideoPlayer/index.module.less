@@ -1,0 +1,53 @@
+@import '~@/styles/variable.less';
+
+@barHeight: 50px;
+
+.videoPlayer {
+  width: 100%;
+  margin: 0 auto;
+  padding: 12px;
+
+  .playerBox {
+    position: relative;
+    width: 100%;
+    max-width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+
+    .headerbar {
+      position: absolute;
+      top: -@barHeight;
+      left: 0;
+      z-index: 999;
+      width: 100%;
+      height: @barHeight;
+      padding: 0 8px;
+      color: @colorInfoText;
+      line-height: @barHeight;
+      background-color: @colorFill;
+      border-radius: 2px;
+      transition: @transition;
+
+      .open {
+        margin-right: 12px;
+      }
+    }
+
+    &:hover {
+      .headerbar {
+        top: 0;
+      }
+    }
+  }
+
+  .upload {
+    color: @colorInfoText;
+
+    .uploadDropper {
+      .uploadIcon {
+        display: block;
+        font-size: 100px;
+      }
+    }
+  }
+}
