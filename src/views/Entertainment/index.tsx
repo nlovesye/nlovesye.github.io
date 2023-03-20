@@ -44,7 +44,11 @@ export default function Entertainment() {
   );
 
   return (
-    <div className={styles.entertainment}>
+    <div
+      className={classNames(styles.entertainment, {
+        [styles.collapsed]: collapsed,
+      })}
+    >
       <aside
         className={classNames(styles.sider, {
           [styles.collapsed]: collapsed,

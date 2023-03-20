@@ -4,15 +4,16 @@
   display: flex;
   flex-grow: 1;
   width: 100%;
+  height: calc(100% - @headerHeight);
 
   .sider {
     position: relative;
     flex-shrink: 0;
     width: @siderHeight;
     height: 100%;
+    overflow: hidden;
     background-color: @colorBgLayout;
     transition: all 180ms;
-    overflow: hidden;
 
     .menu {
       height: 100%;
@@ -27,5 +28,9 @@
     flex-grow: 1;
     height: 100%;
     overflow-y: auto;
+  }
+
+  &.collapsed {
+    height: calc(100% - @collapsedSiderHeight);
   }
 }
