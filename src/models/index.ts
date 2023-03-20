@@ -7,9 +7,9 @@ export interface GlobalState {
   themeType: ThemeType;
   theme: ThemeConfig;
   locale: string;
-  collapsed: boolean,
+  collapsed: boolean;
 }
 
-export interface User {
-  name: string;
-}
+export type DbStoreName = 'video_player';
+
+export type LocalStorageName = 'prev_video_name';

@@ -1,12 +1,14 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Player as PlayerComponent } from '@/components/Player';
 import { Button, List, message, Upload } from 'antd';
 import type { UploadProps } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import { getObjectURL } from '@/utils';
+import { getObjectURL, ls } from '@/utils';
 import type { RcFile } from 'antd/es/upload';
 import styles from './index.module.less';
 import classNames from 'classnames';
+import { initIndexDBStore } from './indexDBStore';
+import type { LocalStorageName } from '@/models';
 
 const accept = '.mp4, .mkv';
 
@@ -21,9 +23,15 @@ const uploadProps: UploadProps = {
   showUploadList: false,
 };
 
-type PlayerRecord = Record<'name' | 'url', string>;
+interface PlayerRecord extends Record<'name', string> {
+  originFile: RcFile;
+  url?: string;
+}
+
+const indexDBStore = initIndexDBStore<PlayerRecord>('video_player');
 
 export default function VideoPlayer() {
+  const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<PlayerRecord[]>([]);
   const [current, setCurrent] = useState<PlayerRecord>();
 
@@ -35,12 +43,11 @@ export default function VideoPlayer() {
         content: '视频加载中，请稍候',
       });
 
-      const objURL = getObjectURL(file as RcFile);
-
       const { name } = file as RcFile;
 
-      const newRecord = { name, url: objURL };
+      const newRecord = { name, originFile: file };
       setList((prevList) => prevList.concat([newRecord]));
+      await indexDBStore.putData(newRecord, name);
 
       hideLoading();
 
@@ -51,16 +58,52 @@ export default function VideoPlayer() {
 
   const onChange = useCallback(() => {
     setCurrent(undefined);
+    ls.remove<LocalStorageName>('prev_video_name');
   }, []);
 
   const onItemClick = useCallback((d: PlayerRecord) => {
-    setCurrent(d);
+    setCurrent((c) => {
+      const newCurrent =
+        c?.name === d.name
+          ? c
+          : !d.url
+          ? {
+              ...d,
+              url: getObjectURL(d.originFile),
+            }
+          : d;
+      ls.set<LocalStorageName>('prev_video_name', newCurrent.name);
+      return newCurrent;
+    });
   }, []);
+
+  const clear = useCallback(() => {
+    setList([]);
+    indexDBStore.clearData();
+  }, []);
+
+  // 初始化播放列表和上一次播放
+  useEffect(() => {
+    indexDBStore
+      .getData()
+      .then((data) => {
+        setLoading(false);
+        setList(data);
+        const prevName = ls.get<LocalStorageName>('prev_video_name');
+        const target = data.find((d) => d.name === prevName);
+        if (target) {
+          onItemClick(target);
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, [onItemClick]);
 
   return (
     <section className={styles.videoPlayer}>
       <div className={styles.left}>
-        <h1 className={styles.title}>{current?.name || '当前未播放'}</h1>
+        <h1 className={styles.title}>{current?.name || '当前无播放记录'}</h1>
         <div className={styles.playerBox}>
           {current?.url && (
             <div className={styles.headerbar}>
@@ -88,13 +131,15 @@ export default function VideoPlayer() {
 
       <div className={styles.playerList}>
         <div className={styles.header}>
-          <Button size="small" onClick={() => setList([])}>
+          播放列表
+          <Button size="small" onClick={clear}>
             清空
           </Button>
         </div>
         <List<PlayerRecord>
           className={styles.list}
           dataSource={list}
+          loading={loading}
           renderItem={(item) => {
             const { name } = item;
             return (
