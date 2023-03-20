@@ -1,12 +1,12 @@
 import { getChildrenRoutes } from '@/router/routes';
 import { Menu } from 'antd';
-import { useState, useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import classNames from 'classnames';
 import { useThemeTokenSelector } from '@/hooks/useThemeTokenSelector';
-import { MenuFoldOutlined } from '@ant-design/icons';
+import { useAppSelector } from '@/store';
 
 const defaultPath = '';
 
@@ -14,11 +14,11 @@ export default function Entertainment() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  const collapsed = useAppSelector((state) => state.global.collapsed);
+
   const siderStyle = useThemeTokenSelector(({ boxShadow }) => ({
     boxShadow,
   }));
-
-  const [collapsed, setCollapsed] = useState(false);
 
   const [parentPath, selectedKey] = useMemo(() => {
     const paths = pathname.split('/');
@@ -59,9 +59,6 @@ export default function Entertainment() {
           onClick={onMenuClick}
           items={menuItems}
         />
-        <div className={styles.collapseButton} onClick={() => setCollapsed((c) => !c)}>
-          <MenuFoldOutlined className={styles.collapseIcon} />
-        </div>
       </aside>
 
       <div className={styles.content}>

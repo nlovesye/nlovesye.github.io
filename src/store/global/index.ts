@@ -9,6 +9,7 @@ const initialState: GlobalState = {
   themeType: 'default',
   theme: defaultTheme,
   locale: '', // 国际化支持配置
+  collapsed: true,
 };
 
 // slice
@@ -29,11 +30,14 @@ export const globalSlice = createSlice({
       state.themeType = themeType;
       state.theme = theme;
     },
+    updateCollapsed: (state: GlobalState) => {
+      state.collapsed = !state.collapsed;
+    },
   },
 });
 
 // actions
-export const { setTheme, setLoading } = globalSlice.actions;
+export const { setTheme, setLoading, updateCollapsed } = globalSlice.actions;
 
 // reducer
 export default globalSlice.reducer;

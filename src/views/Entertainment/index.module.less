@@ -1,11 +1,9 @@
 @import '~@/styles/variable.less';
 
-@collapsedButtonHeight: 36px;
-
 .entertainment {
   display: flex;
+  flex-grow: 1;
   width: 100%;
-  height: calc(100% - @headerHeight);
 
   .sider {
     position: relative;
@@ -14,49 +12,14 @@
     height: 100%;
     background-color: @colorBgLayout;
     transition: all 180ms;
+    overflow: hidden;
 
     .menu {
-      height: calc(100% - @collapsedButtonHeight);
-    }
-
-    .collapseButton {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: @collapsedButtonHeight;
-      color: #ddd;
-      font-size: 18px;
-      line-height: @collapsedButtonHeight;
-      text-align: center;
-      background-color: #002140;
-      border-radius: 0 2px 2px 0;
-      cursor: pointer;
-      transition: all 180ms;
-
-      .collapseIcon {
-        vertical-align: middle;
-      }
-
-      &:hover {
-        color: @colorPrimary;
-      }
+      height: 100%;
     }
 
     &.collapsed {
       width: @collapsedSiderHeight;
-
-      .menu {
-        display: none;
-      }
-
-      .collapseButton {
-        width: @collapsedButtonHeight + 10px;
-
-        .collapseIcon {
-          transform: rotate(180deg);
-        }
-      }
     }
   }
 

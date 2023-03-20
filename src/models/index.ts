@@ -7,6 +7,7 @@ export interface GlobalState {
   themeType: ThemeType;
   theme: ThemeConfig;
   locale: string;
+  collapsed: boolean,
 }
 
 export interface User {

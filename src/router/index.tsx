@@ -7,14 +7,6 @@ import { ROUTES } from './routes';
 export const Router: FC = () => {
   const routes = useMemo(() => ROUTES, []);
 
-  const routesElement = useRoutes(
-    routes.map((r) => {
-      const { element } = r;
-      return {
-        ...r,
-        element,
-      };
-    }),
-  );
+  const routesElement = useRoutes(routes);
   return routesElement;
 };

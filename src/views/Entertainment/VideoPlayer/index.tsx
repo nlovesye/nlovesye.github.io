@@ -52,13 +52,13 @@ export default function VideoPlayer() {
 
   return (
     <section className={styles.videoPlayer}>
+      <h1 className={styles.title}>{currentFileName || '当前未播放'}</h1>
       <div className={styles.playerBox}>
         {url && (
           <div className={styles.headerbar}>
             <Button type="primary" className={styles.open} onClick={onChange}>
               看看别的
             </Button>
-            <span>正在播放：{currentFileName}</span>
           </div>
         )}
 

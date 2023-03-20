@@ -2,23 +2,28 @@
 
 .header {
   display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   height: @headerHeight;
-  padding: 0 20px;
+  padding: 0 20px 0 50px;
   background-color: #001529;
+  transition: all 180ms;
 
   .mainContent {
     display: flex;
     align-items: center;
+    height: 100%;
+    overflow: hidden;
 
     .logo {
       margin-right: 6px;
+      overflow: hidden;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 180ms;
-      border-radius: 6px;
-      overflow: hidden;
 
       &:hover {
         transform: scale(1.08) translateX(4px);
@@ -28,5 +33,20 @@
     .menu {
       flex: auto;
     }
+  }
+
+  &.collapsed {
+    height: 0;
+  }
+}
+
+.collapseButton {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+
+  &.collapsed {
+    transform: rotate(180deg);
   }
 }

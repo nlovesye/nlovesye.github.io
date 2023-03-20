@@ -16,11 +16,13 @@ const MainView: FC = () => {
     <AntdApp className={styles.antApp}>
       <ConfigProvider theme={theme} locale={zhCN}>
         <HashRouter>
-          <Header />
+          <div className={styles.routerRoot}>
+            <Header />
 
-          <Suspense fallback={<RouteLoading />}>
-            <Router />
-          </Suspense>
+            <Suspense fallback={<RouteLoading />}>
+              <Router />
+            </Suspense>
+          </div>
         </HashRouter>
       </ConfigProvider>
     </AntdApp>
