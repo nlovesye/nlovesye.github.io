@@ -7,7 +7,7 @@ export const RouteLoading: FC = () => {
   return (
     <LoadingSpin
       tip="加载中..."
-      size='large'
+      size="large"
       className={styles.routeLoading}
       indicator={<SyncOutlined className={styles.indicatorIcon} spin />}
     />
