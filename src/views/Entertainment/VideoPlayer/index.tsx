@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { Player as PlayerComponent } from '@/components/Player';
 import { Button, List, message, Upload } from 'antd';
 import type { UploadProps } from 'antd';
@@ -9,8 +9,12 @@ import styles from './index.module.less';
 import classNames from 'classnames';
 import { initIndexDBStore } from './indexDBStore';
 import type { LocalStorageName } from '@/models';
+import type { OnProgressProps } from 'react-player/base';
+import type ReactPlayer from 'react-player';
 
 const accept = '.mp4, .mkv';
+
+const LOAD_CACHE_TIME = 1800;
 
 const uploadProps: UploadProps = {
   className: styles.upload,
@@ -35,6 +39,9 @@ export default function VideoPlayer() {
   const [list, setList] = useState<PlayerRecord[]>([]);
   const [current, setCurrent] = useState<PlayerRecord>();
 
+  const playerRef = useRef<ReactPlayer>();
+  const timer = useRef<NodeJS.Timeout>();
+
   const customRequest: UploadProps['customRequest'] = useMemo(
     () => async (d: any) => {
       const { onSuccess, file } = d;
@@ -56,9 +63,8 @@ export default function VideoPlayer() {
     [],
   );
 
-  const onChange = useCallback(() => {
+  const onStop = useCallback(() => {
     setCurrent(undefined);
-    ls.remove('prev_video_name');
   }, []);
 
   const onItemClick = useCallback((d: PlayerRecord) => {
@@ -80,6 +86,11 @@ export default function VideoPlayer() {
   const clear = useCallback(() => {
     setList([]);
     indexDBStore.clearData();
+    ls.remove('prev_video_name');
+  }, []);
+
+  const onProgress = useCallback((state: OnProgressProps) => {
+    ls.set('prev_video_progress_info', state, true);
   }, []);
 
   // 初始化播放列表和上一次播放
@@ -93,6 +104,25 @@ export default function VideoPlayer() {
         const target = data.find((d) => d.name === prevName);
         if (target) {
           onItemClick(target);
+
+          const prevProgressInfo = ls.get<OnProgressProps>('prev_video_progress_info', true);
+          const player = playerRef.current;
+
+          const hideLoading = message.loading({
+            key: 'load',
+            content: '加载播放记录',
+          });
+          if (prevProgressInfo && player) {
+            if (timer.current) {
+              clearTimeout(timer.current);
+            }
+            timer.current = setTimeout(() => {
+              player.seekTo(prevProgressInfo.played);
+              hideLoading();
+            }, LOAD_CACHE_TIME);
+          } else {
+            hideLoading();
+          }
         }
       })
       .catch(() => {
@@ -103,12 +133,12 @@ export default function VideoPlayer() {
   return (
     <section className={styles.videoPlayer}>
       <div className={styles.left}>
-        <h1 className={styles.title}>{current?.name || '当前无播放记录'}</h1>
+        <h1 className={styles.title}>{current?.name || '当前未播放'}</h1>
         <div className={styles.playerBox}>
           {current?.url && (
             <div className={styles.headerbar}>
-              <Button type="primary" className={styles.open} onClick={onChange}>
-                看看别的
+              <Button type="primary" className={styles.open} onClick={onStop}>
+                停止播放
               </Button>
             </div>
           )}
@@ -116,6 +146,8 @@ export default function VideoPlayer() {
           <PlayerComponent
             playerClassName={styles.player}
             url={current?.url}
+            onProgress={onProgress}
+            ref={playerRef}
             emptyCover={
               <Upload.Dragger {...uploadProps} customRequest={customRequest}>
                 <div className={styles.uploadDropper}>
@@ -147,7 +179,10 @@ export default function VideoPlayer() {
                 className={classNames(styles.listItem, {
                   [styles.active]: name === current?.name,
                 })}
-                onClick={() => onItemClick(item)}
+                onClick={() => {
+                  ls.remove('prev_video_progress_info');
+                  onItemClick(item);
+                }}
               >
                 {name}
               </List.Item>

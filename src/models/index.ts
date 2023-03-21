@@ -12,4 +12,4 @@ export interface GlobalState {
 
 export type IDbStoreName = 'video_player';
 
-export type LocalStorageName = 'prev_video_name';
+export type LocalStorageName = 'prev_video_name' | 'prev_video_progress_info';
