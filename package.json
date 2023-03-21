@@ -6,7 +6,7 @@
     "start": "cross-env PORT=9000 craco start",
     "build": "cross-env PUBLIC_URL=/build craco build",
     "deploy": "node ./scripts/deploy.js",
-    "publish": "npm-run-all -s build deploy",
+    "release": "npm-run-all -s build deploy",
     "eject": "craco eject",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
