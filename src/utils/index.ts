@@ -1,3 +1,6 @@
+import type { LocalStorageName } from '@/models';
+import { LocalStorage } from '@nlovesye/utils';
+
 export const sleep = async (second: number) =>
   await new Promise((resolve) => setTimeout(resolve, 1000 * second));
 
@@ -13,4 +16,6 @@ export function getObjectURL(file: Blob | MediaSource): string {
   return url;
 }
 
-export * from './ls';
+export { idb } from './idb';
+
+export const ls = new LocalStorage<LocalStorageName>();

@@ -1,5 +1,5 @@
-import type { DbStoreName } from '@/models';
-import setupDB from '@/utils/indexDB';
+import type { IDbStoreName } from '@/models';
+import { idb } from '@/utils';
 
 const get = async <T>(db: IDBObjectStore, k: string | number) => {
   return new Promise<T>((resolve, reject) => {
@@ -12,17 +12,17 @@ const get = async <T>(db: IDBObjectStore, k: string | number) => {
 };
 
 export function initIndexDBStore<T extends Record<KeyPath, any>, KeyPath extends string = string>(
-  storeName: DbStoreName,
+  storeName: IDbStoreName,
 ) {
   const getByKey = async (keyPathValue: KeyPath) => {
-    return await setupDB().then(async (db) => {
-      return await get<T>(db.getStore(storeName, 'readonly'), keyPathValue);
+    return await idb().then(async (db) => {
+      return await get<T>(db.getObjectStore(storeName, 'readonly'), keyPathValue);
     });
   };
 
   const getData = async () => {
-    return await setupDB().then(async (db) => {
-      const store = db.getStore(storeName, 'readonly');
+    return await idb().then(async (db) => {
+      const store = db.getObjectStore(storeName, 'readonly');
       return new Promise<T[]>((resolve, reject) => {
         const handle = store.getAll();
         handle.onsuccess = (ev) => {
@@ -34,9 +34,9 @@ export function initIndexDBStore<T extends Record<KeyPath, any>, KeyPath extends
   };
 
   async function putData(data: T, k: KeyPath) {
-    return await setupDB()
+    return await idb()
       .then(async (db) => {
-        const store = db.getStore(storeName, 'readwrite');
+        const store = db.getObjectStore(storeName, 'readwrite');
         return new Promise<T>((resolve, reject) => {
           const handle = store.put(data, k);
           handle.onsuccess = (ev) => {
@@ -49,8 +49,8 @@ export function initIndexDBStore<T extends Record<KeyPath, any>, KeyPath extends
   }
 
   async function clearData() {
-    return await setupDB().then(async (db) => {
-      const store = db.getStore(storeName, 'readwrite');
+    return await idb().then(async (db) => {
+      const store = db.getObjectStore(storeName, 'readwrite');
       return new Promise<T>((resolve, reject) => {
         const handle = store.clear();
         handle.onsuccess = (ev) => {
@@ -62,8 +62,8 @@ export function initIndexDBStore<T extends Record<KeyPath, any>, KeyPath extends
   }
 
   const deleteStore = async () => {
-    return await setupDB().then((db) => {
-      return db.deleteStore(storeName);
+    return await idb().then((db) => {
+      return db.deleteObjectStore(storeName);
     });
   };
 

@@ -58,7 +58,7 @@ export default function VideoPlayer() {
 
   const onChange = useCallback(() => {
     setCurrent(undefined);
-    ls.remove<LocalStorageName>('prev_video_name');
+    ls.remove('prev_video_name');
   }, []);
 
   const onItemClick = useCallback((d: PlayerRecord) => {
@@ -72,7 +72,7 @@ export default function VideoPlayer() {
               url: getObjectURL(d.originFile),
             }
           : d;
-      ls.set<LocalStorageName>('prev_video_name', newCurrent.name);
+      ls.set('prev_video_name', newCurrent.name);
       return newCurrent;
     });
   }, []);

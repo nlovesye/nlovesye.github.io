@@ -10,6 +10,6 @@ export interface GlobalState {
   collapsed: boolean;
 }
 
-export type DbStoreName = 'video_player';
+export type IDbStoreName = 'video_player';
 
 export type LocalStorageName = 'prev_video_name';
