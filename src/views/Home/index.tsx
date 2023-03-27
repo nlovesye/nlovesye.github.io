@@ -13,7 +13,7 @@ export default function Home() {
         className={styles.qrcode}
         value="https://nlovesye.github.io"
         errorLevel="H"
-        icon="//nlovesye.github.io/dist/favicon.ico"
+        icon="/favicon.ico"
       />
     </section>
   );

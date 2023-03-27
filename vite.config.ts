@@ -19,6 +19,7 @@ const server = {
 
 export default defineConfig({
   root: 'src',
+  publicDir: '../public',
   plugins: [react()],
   resolve: {
     alias: {
