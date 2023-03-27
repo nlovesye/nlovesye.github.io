@@ -6,8 +6,6 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "node ./scripts/deploy.js",
-    "release": "npm-run-all -s build deploy",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "lint": "npm-run-all -p lint:eslint lint:stylelint lint:prettier",

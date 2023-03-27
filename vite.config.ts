@@ -37,6 +37,7 @@ export default defineConfig({
   },
   server,
   build: {
-    outDir: '../dist',
+    outDir: '..',
+    assetsDir: './assets',
   },
 });
