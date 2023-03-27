@@ -1,6 +1,5 @@
 package.json
 /dist
-/build
 .dockerignore
 .DS_Store
 .eslintignore

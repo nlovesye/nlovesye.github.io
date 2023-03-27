@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const source = resolveDir('build', 'index.html');
+const source = resolveDir('dist', 'index.html');
 const dest = resolveDir('index.html');
 
 fs.rename(source, dest, function (error) {

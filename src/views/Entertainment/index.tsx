@@ -1,12 +1,13 @@
 import { getChildrenRoutes } from '@/router/routes';
 import { Menu } from 'antd';
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, Suspense } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import classNames from 'classnames';
 import { useThemeTokenSelector } from '@/hooks/useThemeTokenSelector';
 import { useAppSelector } from '@/store';
+import { RouteLoading } from '@/components/RouteLoading';
 
 const defaultPath = '';
 
@@ -66,7 +67,9 @@ export default function Entertainment() {
       </aside>
 
       <div className={styles.content}>
-        <Outlet />
+        <Suspense fallback={<RouteLoading />}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   );

@@ -10,4 +10,14 @@ module.exports = {
   rules: {
     // your rules
   },
+
+  overrides: [
+    {
+      files: ['./vite.config.ts'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        project: ['./tsconfig.node.json'],
+      },
+    },
+  ],
 };
