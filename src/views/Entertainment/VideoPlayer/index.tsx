@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { Player as PlayerComponent } from '@/components/Player';
-import { Button, List, message, Upload } from 'antd';
+import { Button, message, Tooltip, Upload } from 'antd';
 import type { UploadProps } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { getObjectURL, ls } from '@/utils';
@@ -35,7 +35,7 @@ interface PlayerRecord extends Record<'name', string> {
 const indexDBStore = initIndexDBStore<PlayerRecord>('video_player');
 
 export default function VideoPlayer() {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<PlayerRecord[]>([]);
   const [current, setCurrent] = useState<PlayerRecord>();
 
@@ -92,6 +92,33 @@ export default function VideoPlayer() {
   const onProgress = useCallback((state: OnProgressProps) => {
     ls.set('prev_video_progress_info', state, true);
   }, []);
+
+  const renderListItem = useCallback(
+    (data: PlayerRecord[]) => {
+      return (
+        <ul className={styles.list}>
+          {data.map((item) => {
+            const { name } = item;
+            return (
+              <li
+                key={name}
+                className={classNames(styles.listItem, {
+                  [styles.active]: name === current?.name,
+                })}
+                onClick={() => {
+                  ls.remove('prev_video_progress_info');
+                  onItemClick(item);
+                }}
+              >
+                <Tooltip title={name}>{name}</Tooltip>
+              </li>
+            );
+          })}
+        </ul>
+      );
+    },
+    [onItemClick, current?.name],
+  );
 
   // 初始化播放列表和上一次播放
   useEffect(() => {
@@ -168,27 +195,8 @@ export default function VideoPlayer() {
             清空
           </Button>
         </div>
-        <List<PlayerRecord>
-          className={styles.list}
-          dataSource={list}
-          loading={loading}
-          renderItem={(item) => {
-            const { name } = item;
-            return (
-              <List.Item
-                className={classNames(styles.listItem, {
-                  [styles.active]: name === current?.name,
-                })}
-                onClick={() => {
-                  ls.remove('prev_video_progress_info');
-                  onItemClick(item);
-                }}
-              >
-                {name}
-              </List.Item>
-            );
-          }}
-        />
+
+        {renderListItem(list)}
       </div>
     </section>
   );

@@ -5,6 +5,8 @@
 
 .videoPlayer {
   display: flex;
+  flex-grow: 0;
+  flex-shrink: 1;
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -86,12 +88,21 @@
     }
 
     .list {
+      width: 100%;
       height: calc(100% - @playerListHeader);
+      overflow-x: hidden;
       overflow-y: auto;
       background-color: @colorBgContainer;
 
       .listItem {
-        padding-left: 12px;
+        width: 100%;
+        padding: 10px 12px;
+        overflow: hidden;
+        font-size: 14px;
+        white-space: wrap;
+        text-overflow: ellipsis;
+        word-wrap: break-all;
+        border-bottom: 1px solid @colorBorder;
         cursor: pointer;
 
         &:hover {
@@ -101,7 +112,7 @@
         &.active {
           color: @colorPrimary;
           font-weight: bold;
-          font-size: 14px;
+          font-size: 16px;
           background-color: @colorFill;
         }
       }
