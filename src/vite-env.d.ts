@@ -1,5 +1,15 @@
 /// <reference types="vite/client" />
 
+interface ImportMetaEnv {
+  readonly VITE_ENV: 'development' | 'production' | 'nginx';
+
+  readonly VITE_ENV: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
 declare module 'react-mouse-particles' {
   export type ConfigPositionProp = any;
   // Some typing error actual type should be:
