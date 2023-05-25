@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env DEPLOY_ENV=nginx vite",
+    "start": "cross-env vite",
     "build": "cross-env NODE_OPTIONS=--max_old_space_size=8192 vite build",
     "build-nginx": "cross-env NODE_OPTIONS=--max_old_space_size=8192 DEPLOY_ENV=nginx vite build",
     "prepare": "husky install",

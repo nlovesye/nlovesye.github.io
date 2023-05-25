@@ -14,14 +14,19 @@
 
   .left {
     flex-grow: 1;
+    overflow: hidden;
 
     .title {
       height: @titleHeight;
       margin-bottom: 0;
       padding: 0 12px;
+      overflow: hidden;
       font-size: 52px;
       line-height: @titleHeight;
+      white-space: nowrap;
       text-align: center;
+      text-overflow: ellipsis;
+      word-break: break-all;
     }
 
     .playerBox {

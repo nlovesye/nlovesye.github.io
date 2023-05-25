@@ -40,7 +40,7 @@ export default function VideoPlayer() {
   const [current, setCurrent] = useState<PlayerRecord>();
 
   const playerRef = useRef<ReactPlayer>();
-  const timer = useRef<NodeJS.Timeout>();
+  const timer = useRef<number>();
 
   const customRequest: UploadProps['customRequest'] = useMemo(
     () => async (d: any) => {
@@ -110,7 +110,9 @@ export default function VideoPlayer() {
                   onItemClick(item);
                 }}
               >
-                <Tooltip title={name}>{name}</Tooltip>
+                <Tooltip placement="bottomLeft" title={name}>
+                  {name}
+                </Tooltip>
               </li>
             );
           })}
@@ -160,7 +162,9 @@ export default function VideoPlayer() {
   return (
     <section className={styles.videoPlayer}>
       <div className={styles.left}>
-        <h1 className={styles.title}>{current?.name || '当前未播放'}</h1>
+        <h1 className={styles.title}>
+          <Tooltip title={current?.name || '当前未播放'}>{current?.name || '当前未播放'}</Tooltip>
+        </h1>
         <div className={styles.playerBox}>
           {current?.url && (
             <div className={styles.headerbar}>
