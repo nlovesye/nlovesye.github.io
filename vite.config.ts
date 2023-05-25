@@ -7,7 +7,6 @@ import { theme } from 'antd';
 import customThemeVars from './src/styles/theme/default.json';
 import globalVars from './src/styles/variables.json';
 
-console.log('shit', process.env.DEPLOY);
 const { DEPLOY_ENV } = process.env;
 
 const isDeployNginx = 'nginx' === DEPLOY_ENV;
@@ -24,16 +23,16 @@ const server = {
 
 const restConfig = !isDeployNginx
   ? {
-      root: 'src',
-      publicDir: '../public',
-      build: !isDeployNginx
-        ? {
-            outDir: '..',
-            assetsDir: './assets',
-          }
-        : undefined,
+      build: {
+        outDir: '..',
+        assetsDir: './assets',
+      },
     }
-  : {};
+  : {
+      build: {
+        outDir: '../dist',
+      },
+    };
 
 export default defineConfig({
   plugins: [react()],
@@ -53,5 +52,7 @@ export default defineConfig({
     },
   },
   server,
+  root: 'src',
+  publicDir: '../public',
   ...restConfig,
 });
