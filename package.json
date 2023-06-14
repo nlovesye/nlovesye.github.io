@@ -54,6 +54,7 @@
     "@reduxjs/toolkit": "^1.9.3",
     "antd": "^5.2.2",
     "react": "^18.2.0",
+    "react-bmapgl": "^0.2.20",
     "react-dom": "^18.2.0",
     "react-mouse-particles": "^1.1.5",
     "react-player": "^2.12.0",
@@ -66,6 +67,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@types/bmapgl": "^0.0.7",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
